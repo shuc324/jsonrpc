@@ -39,10 +39,10 @@ func RemoveDuplicatesAndEmpty(a []string) (ret []string) {
 }
 
 // 发送请求
-func Send(method string, urls Url, filed map[string]interface{}, header []string) (interface{}, int16 , error, string) {
+func Send(method string, urls Url, field map[string]interface{}, header []string) (interface{}, int16 , error, string) {
 	var response string
 	var jsonRpcRes JsonRpcResult
-	b, err := ffjson.Marshal(filed)
+	b, err := ffjson.Marshal(field)
 	if err != nil {
 		return nil, JSON_MARSHAL_ERROR, err, ""
 	}
