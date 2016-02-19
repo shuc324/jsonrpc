@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	JSON_RPC_ID int8 = 0
+	JSON_RPC_VERSION string = "2.0"
 )
 
 // rpc client
@@ -84,11 +84,13 @@ func (client *RpcClient) getBody() (body string) {
 	return client.Body
 }
 
-func (client *RpcClient) call(method string, params map[string]interface{}) *RpcClient {
+func (client *RpcClient) call(method string, params []interface{}) *RpcClient {
 	client.setField(map[string]interface{}{
-		"id": JSON_RPC_ID + 1,
+		// todo
+		"id": 1,
 		"method": method,
 		"params": params,
+		"jsonrpc" : JSON_RPC_VERSION,
 	})
 	if len(client.Method) == 0 {
 		client.setMethod("POST")
