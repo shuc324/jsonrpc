@@ -9,6 +9,7 @@ const (
 	JSON_RPC_ID int8 = 0
 )
 
+// rpc client
 type RpcClient struct {
 	Method   string
 	Urls     transport.Url
@@ -23,6 +24,11 @@ type RpcClient struct {
 // set
 func (client *RpcClient) setMethod(method string) *RpcClient {
 	client.Method = strings.ToUpper(method)
+	return client
+}
+
+func (client *RpcClient) setUri(uri string) *RpcClient {
+	client.Urls.Uri = uri
 	return client
 }
 
@@ -61,7 +67,7 @@ func (client *RpcClient) setBody(body string) *RpcClient {
 	return client
 }
 
-// get todo
+// get
 func (client *RpcClient) getCode() (code int16) {
 	return client.Code
 }
@@ -78,7 +84,6 @@ func (client *RpcClient) getBody() (body string) {
 	return client.Body
 }
 
-// call to get response
 func (client *RpcClient) call(method string, params map[string]interface{}) *RpcClient {
 	client.setField(map[string]interface{}{
 		"id": JSON_RPC_ID + 1,
@@ -91,8 +96,6 @@ func (client *RpcClient) call(method string, params map[string]interface{}) *Rpc
 	if len(client.Header) == 0 {
 		client.setHeader(make([]string, 2, 2))
 	}
-	// todo
-	_, _, _, _ = transport.Send(client.Method, client.Urls, client.Field, client.Header)
-
+	client.Response, client.Code, client.Error, client.Body = transport.Send(client.Method, client.Urls, client.Field, client.Header)
 	return client
 }
