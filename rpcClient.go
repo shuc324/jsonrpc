@@ -17,29 +17,69 @@ type RpcClient struct {
 	Code     int16
 	Error    error
 	Response interface{}
+	Body     string
 }
 
 // set
-func (client *RpcClient) setMethod(method string) {
+func (client *RpcClient) setMethod(method string) *RpcClient {
 	client.Method = strings.ToUpper(method)
+	return client
 }
 
-func (client *RpcClient) setUrls(urls transport.Url) {
+func (client *RpcClient) setUrls(urls transport.Url) *RpcClient {
 	client.Urls = urls
+	return client
 }
 
-func (client *RpcClient) setField(field map[string]interface{}) {
+func (client *RpcClient) setField(field map[string]interface{}) *RpcClient {
 	client.Field = field
+	return client
 }
 
-func (client *RpcClient) setHeader(header []string) {
+func (client *RpcClient) setHeader(header []string) *RpcClient {
 	client.Header = header
+	return client
+}
+
+func (client *RpcClient) setCode(code int16) *RpcClient {
+	client.Code = code
+	return client
+}
+
+func (client *RpcClient) setError(err error) *RpcClient {
+	client.Error = err
+	return client
+}
+
+func (client *RpcClient) setResponse(response interface{}) *RpcClient {
+	client.Response = response
+	return client
+}
+
+func (client *RpcClient) setBody(body string) *RpcClient {
+	client.Body = body
+	return client
 }
 
 // get todo
+func (client *RpcClient) getCode() (code int16) {
+	return client.Code
+}
+
+func (client *RpcClient) getResponse() (response interface{}) {
+	return client.Response
+}
+
+func (client *RpcClient) getError() (err error) {
+	return client.Error
+}
+
+func (client *RpcClient) getBody() (body string) {
+	return client.Body
+}
 
 // call to get response
-func (client *RpcClient) call(method string, params map[string]interface{}) {
+func (client *RpcClient) call(method string, params map[string]interface{}) *RpcClient {
 	client.setField(map[string]interface{}{
 		"id": JSON_RPC_ID + 1,
 		"method": method,
@@ -53,4 +93,6 @@ func (client *RpcClient) call(method string, params map[string]interface{}) {
 	}
 	// todo
 	_, _, _, _ = transport.Send(client.Method, client.Urls, client.Field, client.Header)
+
+	return client
 }
